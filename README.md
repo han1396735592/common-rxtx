@@ -7,7 +7,7 @@
 <dependency>
     <groupId>cn.qqhxj.common</groupId>
     <artifactId>rxtx</artifactId>
-    <version>1.3-RELEASE</version>
+    <version>1.31-RELEASE</version>
 <dependency>
 ```
 2. 设置串口

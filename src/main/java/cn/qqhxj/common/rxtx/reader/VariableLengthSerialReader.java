@@ -18,9 +18,6 @@ public class VariableLengthSerialReader implements SerialReader {
 
     private char endChar = '}';
 
-    private boolean haveNext = false;
-
-
     public VariableLengthSerialReader() {
     }
 
@@ -50,29 +47,21 @@ public class VariableLengthSerialReader implements SerialReader {
                 if (ch == startChar) {
                     byteBuffer = ByteBuffer.allocate(1024);
                     byteBuffer.put((byte) ch);
-                    haveNext = true;
                     continue;
                 }
                 if (ch == endChar) {
-                    if (byteBuffer.position()>0){
-                        if (((char) byteBuffer.get(0))==startChar){
+                    if (byteBuffer.position() > 0) {
+                        if (((char) byteBuffer.get(0)) == startChar) {
                             byteBuffer.put((byte) ch);
-                            haveNext = false;
-                            break;
-                        }else {
-                            byteBuffer =ByteBuffer.allocate(1024);
+                            byte[] array = Arrays.copyOf(byteBuffer.array(), byteBuffer.position());
+                            byteBuffer = ByteBuffer.allocate(1024);
+                            return array;
+                        } else {
+                            byteBuffer = ByteBuffer.allocate(1024);
                         }
                     }
                 }
-                if (haveNext) {
-                    byteBuffer.put((byte) ch);
-                }else{
-                    if (byteBuffer.position() != 0) {
-                        byte[] array = Arrays.copyOf(byteBuffer.array(), byteBuffer.position());
-                        byteBuffer = ByteBuffer.allocate(1024);
-                        return array;
-                    }
-                }
+                byteBuffer.put((byte) ch);
             } catch (IOException e) {
                 e.printStackTrace();
             }
