@@ -5,9 +5,9 @@
 
 ```xml
 <dependency>
-    <groupId>cn.qqhxj</groupId>
-    <artifactId>common-rxtx</artifactId>
-    <version>1.01-RELEASE</version>
+    <groupId>cn.qqhxj.common</groupId>
+    <artifactId>rxtx</artifactId>
+    <version>1.1-RELEASE</version>
 <dependency>
 ```
 
