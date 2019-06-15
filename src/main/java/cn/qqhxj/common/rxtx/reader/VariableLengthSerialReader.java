@@ -21,6 +21,9 @@ public class VariableLengthSerialReader implements SerialReader {
     private boolean haveNext = false;
 
 
+    public VariableLengthSerialReader() {
+    }
+
     public VariableLengthSerialReader(char startChar, char endChar) {
         this.startChar = startChar;
         this.endChar = endChar;
@@ -45,27 +48,34 @@ public class VariableLengthSerialReader implements SerialReader {
             try {
                 ch = SerialContext.getSerialPort().getInputStream().read();
                 if (ch == startChar) {
+                    byteBuffer = ByteBuffer.allocate(1024);
                     byteBuffer.put((byte) ch);
                     haveNext = true;
                     continue;
                 }
                 if (ch == endChar) {
-                    byteBuffer.put((byte) ch);
-                    haveNext = false;
-                    break;
+                    if (byteBuffer.position()>0){
+                        if (((char) byteBuffer.get(0))==startChar){
+                            byteBuffer.put((byte) ch);
+                            haveNext = false;
+                            break;
+                        }else {
+                            byteBuffer =ByteBuffer.allocate(1024);
+                        }
+                    }
                 }
                 if (haveNext) {
                     byteBuffer.put((byte) ch);
+                }else{
+                    if (byteBuffer.position() != 0) {
+                        byte[] array = Arrays.copyOf(byteBuffer.array(), byteBuffer.position());
+                        byteBuffer = ByteBuffer.allocate(1024);
+                        return array;
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-
-        if (byteBuffer.position() != 0) {
-            byte[] array = Arrays.copyOf(byteBuffer.array(), byteBuffer.position());
-            byteBuffer = ByteBuffer.allocate(1024);
-            return array;
         }
         return null;
     }

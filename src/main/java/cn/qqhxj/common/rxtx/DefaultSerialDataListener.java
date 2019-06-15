@@ -2,7 +2,7 @@ package cn.qqhxj.common.rxtx;
 
 
 import cn.qqhxj.common.rxtx.parse.SerialDataParser;
-import cn.qqhxj.common.rxtx.processor.SerialByteDataProcesser;
+import cn.qqhxj.common.rxtx.processor.SerialByteDataProcessor;
 import cn.qqhxj.common.rxtx.processor.SerialDataProcessor;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
@@ -31,9 +31,9 @@ public class DefaultSerialDataListener implements SerialPortEventListener {
                 }
             }
             if (bytes != null && bytes.length > 0) {
-                SerialByteDataProcesser processer = SerialContext.getSerialByteDataProcesser();
-                if (processer != null) {
-                    processer.processer(bytes);
+                SerialByteDataProcessor processor = SerialContext.getSerialByteDataProcessor();
+                if (processor != null) {
+                    processor.process(bytes);
                 }
             }
         } else {
@@ -63,7 +63,7 @@ public class DefaultSerialDataListener implements SerialPortEventListener {
                             try {
                                 Class<?> forName = Class.forName(typeName);
                                 if (forName == obj.getClass()) {
-                                    serialDataProcessor.processor(obj);
+                                    serialDataProcessor.process(obj);
                                 }
                             } catch (ClassNotFoundException e) {
                                 e.printStackTrace();

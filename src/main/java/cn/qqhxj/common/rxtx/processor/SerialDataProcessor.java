@@ -10,5 +10,5 @@ public interface SerialDataProcessor<T> {
      *
      * @param t object
      */
-    void processor(T t);
+    void process(T t);
 }
