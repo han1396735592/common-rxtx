@@ -7,7 +7,7 @@
 <dependency>
     <groupId>cn.qqhxj</groupId>
     <artifactId>common-rxtx</artifactId>
-    <version>1.2-RELEASE</version>
+    <version>1.01-RELEASE</version>
 <dependency>
 ```
 
