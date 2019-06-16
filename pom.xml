@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.qqhxj.common</groupId>
     <artifactId>rxtx</artifactId>
-    <version>1.31-RELEASE</version>
+    <version>1.3-RELEASE</version>
 
     <name>common-rxtx</name>
     <description>串口操作</description>
