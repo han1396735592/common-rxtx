@@ -91,8 +91,43 @@ public class SerialContext {
         autoSerialPortAddEventListener(serialPort);
     }
 
+    public static final int DEFAULT_OUT_TIME = 100;
+
+    public static byte[] sendAndRead(byte[] data) {
+        return sendAndRead(data, DEFAULT_OUT_TIME);
+    }
+
+    public static <T> T sendAndRead(byte[] data, SerialDataParser<T> parser) {
+        byte[] bytes = sendAndRead(data);
+        return parser.parse(data);
+    }
+
+    public static byte[] sendAndRead(byte[] data, int outTime) {
+        serialPort.notifyOnDataAvailable(false);
+        sendData(data);
+        return readData(outTime);
+    }
+
+    public static <T> T sendAndRead(byte[] data, int outTime, SerialDataParser<T> parser) {
+        byte[] bytes = sendAndRead(data, outTime);
+        return parser.parse(bytes);
+    }
+
     public static byte[] readData() {
-        return serialReader.readBytes();
+        return readData(DEFAULT_OUT_TIME);
+    }
+
+    public static byte[] readData(int outTime) {
+        serialPort.notifyOnDataAvailable(false);
+        while (outTime-- > 0) {
+            byte[] bytes = serialReader.readBytes();
+            if (bytes != null && bytes.length > 0) {
+                serialPort.notifyOnDataAvailable(true);
+                return bytes;
+            }
+        }
+        serialPort.notifyOnDataAvailable(true);
+        return null;
     }
 
     public static boolean sendData(byte[] data) {
@@ -106,12 +141,7 @@ public class SerialContext {
     }
 
     public static boolean sendData(SerialSendDataEntity obj) {
-        try {
-            serialPort.getOutputStream().write(obj.getBytes());
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
+        return sendData(obj.getBytes());
     }
 
     public static SerialPort getSerialPort() {
