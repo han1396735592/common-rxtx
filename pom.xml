@@ -9,6 +9,13 @@
     <description>串口操作</description>
     <url>https://github.com/han1396735592/common-rxtx</url>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+    </properties>
+
+
     <distributionManagement>
         <snapshotRepository>
             <id>sonatype</id>
@@ -104,6 +111,7 @@
                 <configuration>
                     <source>8</source>
                     <target>8</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
         </plugins>

@@ -99,7 +99,7 @@ public class SerialContext {
 
     public static <T> T sendAndRead(byte[] data, SerialDataParser<T> parser) {
         byte[] bytes = sendAndRead(data);
-        return parser.parse(data);
+        return parser.parse(bytes);
     }
 
     public static byte[] sendAndRead(byte[] data, int outTime) {
@@ -124,6 +124,11 @@ public class SerialContext {
             if (bytes != null && bytes.length > 0) {
                 serialPort.notifyOnDataAvailable(true);
                 return bytes;
+            }
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
         serialPort.notifyOnDataAvailable(true);

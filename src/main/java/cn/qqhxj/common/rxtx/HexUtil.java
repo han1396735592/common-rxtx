@@ -5,7 +5,7 @@ package cn.qqhxj.common.rxtx;
  **/
 public class HexUtil {
     public static byte[] HexStringToBytes(String str) {
-        if (str == null || str.length()<=0) {
+        if (str == null || str.length() <= 0) {
             return new byte[0];
         }
         str = str.trim();
@@ -28,11 +28,12 @@ public class HexUtil {
         }
         for (byte b : src) {
             int v = b & 0xFF;
-            String hv = Integer.toHexString(v)+" ";
+            String hv = Integer.toHexString(v);
             if (hv.length() < 2) {
                 stringBuilder.append(0);
             }
             stringBuilder.append(hv);
+            stringBuilder.append(" ");
         }
         return stringBuilder.toString();
     }
