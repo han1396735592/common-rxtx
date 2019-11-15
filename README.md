@@ -1,6 +1,8 @@
 # 简单的串口操作
 
 ## 如何使用
+- spring boot 项目请使用 [spring-boot-starter-rxtx](https://github.com/han1396735592/spring-boot-starter-rxtx) 
+
 1. 引入依赖
 
 ```xml
