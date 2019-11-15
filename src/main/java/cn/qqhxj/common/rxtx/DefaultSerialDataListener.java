@@ -23,14 +23,14 @@ public class DefaultSerialDataListener implements SerialPortEventListener {
             if (bytes == null) {
                 return;
             }
-            Object parse = null;
+            Object parse;
             for (SerialDataParser serialDataParser : parserSet) {
                 parse = serialDataParser.parse(bytes);
                 if (parse != null) {
                     dataProcessors(parse);
                 }
             }
-            if (bytes != null && bytes.length > 0) {
+            if (bytes.length > 0) {
                 SerialByteDataProcessor processor = SerialContext.getSerialByteDataProcessor();
                 if (processor != null) {
                     processor.process(bytes);
@@ -44,14 +44,13 @@ public class DefaultSerialDataListener implements SerialPortEventListener {
     private void dataProcessors(Object obj) {
         Set<SerialDataProcessor> dataProcessors = SerialContext.getSerialDataProcessorSet();
         for (SerialDataProcessor serialDataProcessor : dataProcessors) {
-            Type[] types = null;
             Class cl = serialDataProcessor.getClass();
             Class c2 = cl.getSuperclass();
             while (!c2.equals(Object.class)) {
                 cl = cl.getSuperclass();
                 c2 = cl.getSuperclass();
             }
-            types = cl.getGenericInterfaces();
+            Type[] types = cl.getGenericInterfaces();
             for (Type type : types) {
                 if (type instanceof ParameterizedType) {
                     ParameterizedType parameterizedType = (ParameterizedType) type;

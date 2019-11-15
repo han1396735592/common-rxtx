@@ -12,7 +12,7 @@ import java.util.Arrays;
 public class VariableLengthSerialReader implements SerialReader {
 
 
-    ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+    private ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
 
     private char startChar = '{';
 
@@ -24,18 +24,6 @@ public class VariableLengthSerialReader implements SerialReader {
     public VariableLengthSerialReader(char startChar, char endChar) {
         this.startChar = startChar;
         this.endChar = endChar;
-    }
-
-
-    @Override
-    public String readString() {
-        byte[] bytes = readBytes();
-        if (bytes != null) {
-            if (bytes.length > 0) {
-                return new String(bytes);
-            }
-        }
-        return null;
     }
 
     @Override

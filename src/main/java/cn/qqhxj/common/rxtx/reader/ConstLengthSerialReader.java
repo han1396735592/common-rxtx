@@ -17,18 +17,6 @@ public class ConstLengthSerialReader implements SerialReader {
 
     private boolean read = true;
 
-
-    @Override
-    public String readString() {
-        byte[] bytes = readBytes();
-        if (bytes != null) {
-            if (bytes.length > 0) {
-                return new String(bytes);
-            }
-        }
-        return null;
-    }
-
     @Override
     public byte[] readBytes() {
         for (; index < length; index++) {

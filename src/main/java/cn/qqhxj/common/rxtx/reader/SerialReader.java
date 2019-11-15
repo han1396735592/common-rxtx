@@ -3,14 +3,9 @@ package cn.qqhxj.common.rxtx.reader;
 /**
  * @author han xinjian
  **/
+@FunctionalInterface
 public interface SerialReader {
 
-    /**
-     * read a str
-     *
-     * @return str
-     */
-    String readString();
 
     /**
      * read a byte array

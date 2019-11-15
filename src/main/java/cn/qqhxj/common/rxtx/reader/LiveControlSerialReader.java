@@ -31,23 +31,12 @@ public class LiveControlSerialReader implements SerialReader {
     }
 
     @Override
-    public String readString() {
-        byte[] bytes = readBytes();
-        if (bytes != null) {
-            if (bytes.length > 0) {
-                return new String(bytes);
-            }
-        }
-        return null;
-    }
-
-    @Override
     public byte[] readBytes() {
         try {
             byte read = ((byte) SerialContext.getSerialPort().getInputStream().read());
             int index = Arrays.binarySearch(startChat, read);
             if (index >= 0) {
-                byteBuffer.put((byte) read);
+                byteBuffer.put(read);
                 allLength = 1;
                 notOver = true;
             } else {
@@ -56,7 +45,7 @@ public class LiveControlSerialReader implements SerialReader {
                         length = read;
                     }
                     allLength += 1;
-                    byteBuffer.put((byte) read);
+                    byteBuffer.put(read);
                     if (allLength == flagIndex + length) {
                         notOver = false;
                         byte[] array = Arrays.copyOf(byteBuffer.array(), byteBuffer.position());

@@ -26,8 +26,4 @@ public class AnyDataReader implements SerialReader {
         return null;
     }
 
-    @Override
-    public String readString() {
-        return new String(readBytes());
-    }
 }
