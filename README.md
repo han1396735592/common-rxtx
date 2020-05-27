@@ -1,5 +1,7 @@
 # 简单的串口操作
 
+- 使用之前请确保引用了dll  [dll下载地址](https://github.com/CMU-CREATE-Lab/commons-java/tree/master/java/lib/rxtx)
+
 ## 如何使用
 - spring boot 项目请使用 [spring-boot-starter-rxtx](https://github.com/han1396735592/spring-boot-starter-rxtx) 
 
