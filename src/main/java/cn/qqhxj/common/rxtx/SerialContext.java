@@ -19,105 +19,105 @@ import java.util.TooManyListenersException;
  **/
 public class SerialContext {
 
-    private static SerialPort serialPort;
+    private  SerialPort serialPort;
 
-    private static SerialReader serialReader;
+    private  SerialReader serialReader;
 
-    private static SerialByteDataProcessor serialByteDataProcessor;
+    private  SerialByteDataProcessor serialByteDataProcessor;
 
-    private static SerialPortEventListener serialPortEventListener;
+    private  SerialPortEventListener serialPortEventListener;
 
-    public static SerialPortEventListener getSerialPortEventListener() {
+    public  SerialPortEventListener getSerialPortEventListener() {
         return serialPortEventListener;
     }
 
-    public static void setSerialPortEventListener(SerialPortEventListener serialPortEventListener) {
-        SerialContext.serialPortEventListener = serialPortEventListener;
+    public  void setSerialPortEventListener(SerialPortEventListener serialPortEventListener) {
+        this.serialPortEventListener = serialPortEventListener;
         autoSerialPortAddEventListener(serialPort);
     }
 
-    private static void autoSerialPortAddEventListener(SerialPort serialPort) {
-        if (SerialContext.serialPortEventListener != null && SerialContext.serialPort != null) {
+    private  void autoSerialPortAddEventListener(SerialPort serialPort) {
+        if (this.serialPortEventListener != null && this.serialPort != null) {
             serialPort.removeEventListener();
             try {
-                SerialContext.serialPort.addEventListener(SerialContext.serialPortEventListener);
-                SerialContext.serialPort.notifyOnDataAvailable(true);
+                this.serialPort.addEventListener(this.serialPortEventListener);
+                this.serialPort.notifyOnDataAvailable(true);
             } catch (TooManyListenersException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public static SerialReader getSerialReader() {
+    public  SerialReader getSerialReader() {
         return serialReader;
     }
 
-    public static SerialByteDataProcessor getSerialByteDataProcessor() {
+    public  SerialByteDataProcessor getSerialByteDataProcessor() {
         return serialByteDataProcessor;
     }
 
-    public static void setSerialByteDataProcessor(SerialByteDataProcessor serialByteDataProcessor) {
-        SerialContext.serialByteDataProcessor = serialByteDataProcessor;
+    public  void setSerialByteDataProcessor(SerialByteDataProcessor serialByteDataProcessor) {
+        this.serialByteDataProcessor = serialByteDataProcessor;
     }
 
-    public static void setSerialDataParserSet(Set<SerialDataParser> serialDataParserSet) {
-        SerialContext.serialDataParserSet = serialDataParserSet;
+    public  void setSerialDataParserSet(Set<SerialDataParser> serialDataParserSet) {
+        this.serialDataParserSet = serialDataParserSet;
     }
 
-    public static void setSerialDataProcessorSet(Set<SerialDataProcessor> serialDataProcessorSet) {
-        SerialContext.serialDataProcessorSet = serialDataProcessorSet;
+    public  void setSerialDataProcessorSet(Set<SerialDataProcessor> serialDataProcessorSet) {
+        this.serialDataProcessorSet = serialDataProcessorSet;
     }
 
-    private static Set<SerialDataParser> serialDataParserSet =
+    private  Set<SerialDataParser> serialDataParserSet =
             Collections.synchronizedSet(new HashSet<SerialDataParser>());
 
-    public static Set<SerialDataProcessor> serialDataProcessorSet =
+    public  Set<SerialDataProcessor> serialDataProcessorSet =
             Collections.synchronizedSet(new HashSet<SerialDataProcessor>());
 
-    public static Set<SerialDataProcessor> getSerialDataProcessorSet() {
+    public  Set<SerialDataProcessor> getSerialDataProcessorSet() {
         return serialDataProcessorSet;
     }
 
-    public static Set<SerialDataParser> getSerialDataParserSet() {
+    public  Set<SerialDataParser> getSerialDataParserSet() {
         return serialDataParserSet;
     }
 
-    public static void setSerialReader(SerialReader serialReader) {
-        SerialContext.serialReader = serialReader;
+    public  void setSerialReader(SerialReader serialReader) {
+        this.serialReader = serialReader;
     }
 
-    public static void setSerialPort(SerialPort serialPort) {
-        SerialContext.serialPort = serialPort;
+    public  void setSerialPort(SerialPort serialPort) {
+        this.serialPort = serialPort;
         autoSerialPortAddEventListener(serialPort);
     }
 
-    public static final int DEFAULT_OUT_TIME = 100;
+    public  final int DEFAULT_OUT_TIME = 100;
 
-    public static byte[] sendAndRead(byte[] data) {
+    public  byte[] sendAndRead(byte[] data) {
         return sendAndRead(data, DEFAULT_OUT_TIME);
     }
 
-    public static <T> T sendAndRead(byte[] data, SerialDataParser<T> parser) {
+    public  <T> T sendAndRead(byte[] data, SerialDataParser<T> parser) {
         byte[] bytes = sendAndRead(data);
         return parser.parse(bytes);
     }
 
-    public static byte[] sendAndRead(byte[] data, int outTime) {
+    public  byte[] sendAndRead(byte[] data, int outTime) {
         serialPort.notifyOnDataAvailable(false);
         sendData(data);
         return readData(outTime);
     }
 
-    public static <T> T sendAndRead(byte[] data, int outTime, SerialDataParser<T> parser) {
+    public  <T> T sendAndRead(byte[] data, int outTime, SerialDataParser<T> parser) {
         byte[] bytes = sendAndRead(data, outTime);
         return parser.parse(bytes);
     }
 
-    public static byte[] readData() {
+    public  byte[] readData() {
         return readData(DEFAULT_OUT_TIME);
     }
 
-    public static byte[] readData(int outTime) {
+    public  byte[] readData(int outTime) {
         serialPort.notifyOnDataAvailable(false);
         while (outTime-- > 0) {
             byte[] bytes = serialReader.readBytes();
@@ -135,7 +135,7 @@ public class SerialContext {
         return null;
     }
 
-    public static boolean sendData(byte[] data) {
+    public  boolean sendData(byte[] data) {
         try {
             serialPort.getOutputStream().write(data);
             return true;
@@ -145,11 +145,11 @@ public class SerialContext {
         return false;
     }
 
-    public static boolean sendData(SerialSendDataEntity obj) {
+    public  boolean sendData(SerialSendDataEntity obj) {
         return sendData(obj.getBytes());
     }
 
-    public static SerialPort getSerialPort() {
+    public  SerialPort getSerialPort() {
         return serialPort;
     }
 }

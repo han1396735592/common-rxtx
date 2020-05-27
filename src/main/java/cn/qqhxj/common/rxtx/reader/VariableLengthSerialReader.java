@@ -9,9 +9,12 @@ import java.util.Arrays;
 /**
  * @author han xinjian
  **/
-public class VariableLengthSerialReader implements SerialReader {
+public class VariableLengthSerialReader  implements SerialReader {
 
-
+    private SerialContext serialContext;
+    public void binder(SerialContext serialContext){
+        this.serialContext =serialContext;
+    }
     private ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
 
     private char startChar = '{';
@@ -31,7 +34,7 @@ public class VariableLengthSerialReader implements SerialReader {
         int ch = 0;
         while (ch != -1) {
             try {
-                ch = SerialContext.getSerialPort().getInputStream().read();
+                ch = serialContext.getSerialPort().getInputStream().read();
                 if (ch == startChar) {
                     byteBuffer = ByteBuffer.allocate(1024);
                     byteBuffer.put((byte) ch);

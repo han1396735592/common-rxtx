@@ -14,12 +14,17 @@ import java.util.Set;
 /**
  * @author han xinjian
  **/
-public class DefaultSerialDataListener implements SerialPortEventListener {
+public class DefaultSerialDataListener  implements SerialPortEventListener {
+
+    private SerialContext serialContext;
+    public void binder(SerialContext serialContext){
+        this.serialContext =serialContext;
+    }
     @Override
     public void serialEvent(SerialPortEvent ev) {
         if (ev.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
-            Set<SerialDataParser> parserSet = SerialContext.getSerialDataParserSet();
-            byte[] bytes = SerialContext.readData();
+            Set<SerialDataParser> parserSet = serialContext.getSerialDataParserSet();
+            byte[] bytes = serialContext.readData();
             if (bytes == null) {
                 return;
             }
@@ -31,7 +36,7 @@ public class DefaultSerialDataListener implements SerialPortEventListener {
                 }
             }
             if (bytes.length > 0) {
-                SerialByteDataProcessor processor = SerialContext.getSerialByteDataProcessor();
+                SerialByteDataProcessor processor = serialContext.getSerialByteDataProcessor();
                 if (processor != null) {
                     processor.process(bytes);
                 }
@@ -42,7 +47,7 @@ public class DefaultSerialDataListener implements SerialPortEventListener {
     }
 
     private void dataProcessors(Object obj) {
-        Set<SerialDataProcessor> dataProcessors = SerialContext.getSerialDataProcessorSet();
+        Set<SerialDataProcessor> dataProcessors = serialContext.getSerialDataProcessorSet();
         for (SerialDataProcessor serialDataProcessor : dataProcessors) {
             Class cl = serialDataProcessor.getClass();
             Class c2 = cl.getSuperclass();

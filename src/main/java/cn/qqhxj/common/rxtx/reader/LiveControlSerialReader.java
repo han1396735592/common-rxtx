@@ -8,7 +8,12 @@ import java.util.Arrays;
 /**
  * @author han xinjian
  **/
-public class LiveControlSerialReader implements SerialReader {
+public class LiveControlSerialReader   implements SerialReader {
+
+    private SerialContext serialContext;
+    public void binder(SerialContext serialContext){
+        this.serialContext =serialContext;
+    }
 
     private byte[] startChat;
 
@@ -33,7 +38,7 @@ public class LiveControlSerialReader implements SerialReader {
     @Override
     public byte[] readBytes() {
         try {
-            byte read = ((byte) SerialContext.getSerialPort().getInputStream().read());
+            byte read = ((byte) serialContext.getSerialPort().getInputStream().read());
             int index = Arrays.binarySearch(startChat, read);
             if (index >= 0) {
                 byteBuffer.put(read);

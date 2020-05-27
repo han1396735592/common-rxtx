@@ -7,8 +7,11 @@ import java.io.IOException;
 /**
  * @author han xinjian
  **/
-public class ConstLengthSerialReader implements SerialReader {
-
+public class ConstLengthSerialReader   implements SerialReader {
+    private SerialContext serialContext;
+    public void binder(SerialContext serialContext){
+        this.serialContext =serialContext;
+    }
     private int length;
 
     private int index = 0;
@@ -21,7 +24,7 @@ public class ConstLengthSerialReader implements SerialReader {
     public byte[] readBytes() {
         for (; index < length; index++) {
             try {
-                int read = SerialContext.getSerialPort().getInputStream().read();
+                int read = serialContext.getSerialPort().getInputStream().read();
                 if (read == -1) {
                     break;
                 } else {

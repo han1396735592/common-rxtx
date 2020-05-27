@@ -6,7 +6,6 @@ package cn.qqhxj.common.rxtx.reader;
 @FunctionalInterface
 public interface SerialReader {
 
-
     /**
      * read a byte array
      *
