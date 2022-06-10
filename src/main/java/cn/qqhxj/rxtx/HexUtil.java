@@ -1,7 +1,7 @@
-package cn.qqhxj.common.rxtx;
+package cn.qqhxj.rxtx;
 
 /**
- * @author han xinjian
+ * @author han1396735592
  **/
 public class HexUtil {
     public static byte[] HexStringToBytes(String str) {

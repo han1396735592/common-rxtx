@@ -1,4 +1,4 @@
-package cn.qqhxj.common.rxtx;
+package cn.qqhxj.rxtx;
 
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 
 /**
- * @author han xinjian
+ * @author han1396735592
  **/
 public class SerialUtils {
 
@@ -63,8 +63,8 @@ public class SerialUtils {
     /**
      * connect SerialPort
      *
-     * @param portName port name
-     * @param baudRate baudRate
+     * @param portName 串口名称
+     * @param baudRate 波特率
      * @return SerialPort
      * @throws Exception SerialPort connect err
      */

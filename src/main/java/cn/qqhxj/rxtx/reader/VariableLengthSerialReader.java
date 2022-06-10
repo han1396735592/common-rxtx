@@ -1,21 +1,17 @@
-package cn.qqhxj.common.rxtx.reader;
+package cn.qqhxj.rxtx.reader;
 
-import cn.qqhxj.common.rxtx.SerialContext;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 /**
- * @author han xinjian
+ * @author han1396735592
  **/
-public class VariableLengthSerialReader  implements SerialReader {
+public class VariableLengthSerialReader extends BaseSerialReader {
 
-    private SerialContext serialContext;
-    public void binder(SerialContext serialContext){
-        this.serialContext =serialContext;
-    }
     private ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+
 
     private char startChar = '{';
 
@@ -34,7 +30,7 @@ public class VariableLengthSerialReader  implements SerialReader {
         int ch = 0;
         while (ch != -1) {
             try {
-                ch = serialContext.getSerialPort().getInputStream().read();
+                ch = this.getInputStream().read();
                 if (ch == startChar) {
                     byteBuffer = ByteBuffer.allocate(1024);
                     byteBuffer.put((byte) ch);

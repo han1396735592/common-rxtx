@@ -1,19 +1,15 @@
-package cn.qqhxj.common.rxtx.reader;
+package cn.qqhxj.rxtx.reader;
 
-import cn.qqhxj.common.rxtx.SerialContext;
+import cn.qqhxj.rxtx.SerialContext;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 /**
- * @author han xinjian
+ * @author han1396735592
  **/
-public class LiveControlSerialReader   implements SerialReader {
+public class LiveControlSerialReader extends BaseSerialReader {
 
-    private SerialContext serialContext;
-    public void binder(SerialContext serialContext){
-        this.serialContext =serialContext;
-    }
 
     private byte[] startChat;
 
@@ -38,7 +34,7 @@ public class LiveControlSerialReader   implements SerialReader {
     @Override
     public byte[] readBytes() {
         try {
-            byte read = ((byte) serialContext.getSerialPort().getInputStream().read());
+            byte read = ((byte) this.getInputStream().read());
             int index = Arrays.binarySearch(startChat, read);
             if (index >= 0) {
                 byteBuffer.put(read);

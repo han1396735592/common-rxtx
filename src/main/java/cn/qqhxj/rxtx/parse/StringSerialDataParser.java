@@ -1,7 +1,7 @@
-package cn.qqhxj.common.rxtx.parse;
+package cn.qqhxj.rxtx.parse;
 
 /**
- * @author han xinjian
+ * @author han1396735592
  **/
 public class StringSerialDataParser implements SerialDataParser<String> {
     @Override

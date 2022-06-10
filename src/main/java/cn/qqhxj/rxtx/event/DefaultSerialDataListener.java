@@ -1,31 +1,32 @@
-package cn.qqhxj.common.rxtx;
+package cn.qqhxj.rxtx.event;
 
 
-import cn.qqhxj.common.rxtx.parse.SerialDataParser;
-import cn.qqhxj.common.rxtx.processor.SerialByteDataProcessor;
-import cn.qqhxj.common.rxtx.processor.SerialDataProcessor;
+import cn.qqhxj.rxtx.SerialContext;
+import cn.qqhxj.rxtx.parse.SerialDataParser;
+import cn.qqhxj.rxtx.processor.SerialByteDataProcessor;
+import cn.qqhxj.rxtx.processor.SerialDataProcessor;
 import gnu.io.SerialPortEvent;
-import gnu.io.SerialPortEventListener;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Set;
 
 /**
- * @author han xinjian
+ * @author han1396735592
  **/
-public class DefaultSerialDataListener  implements SerialPortEventListener {
+public class DefaultSerialDataListener extends BaseSerialDataListener {
 
-    private SerialContext serialContext;
-    public void binder(SerialContext serialContext){
-        this.serialContext =serialContext;
+
+    public DefaultSerialDataListener(SerialContext serialContext) {
+        super(serialContext);
     }
+
     @Override
     public void serialEvent(SerialPortEvent ev) {
-        if (ev.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
+        if (ev.getEventType() == SerialPortEvent.DATA_AVAILABLE && this.serialContext != null) {
             Set<SerialDataParser> parserSet = serialContext.getSerialDataParserSet();
             byte[] bytes = serialContext.readData();
-            if (bytes == null) {
+            if (bytes.length == 0) {
                 return;
             }
             Object parse;

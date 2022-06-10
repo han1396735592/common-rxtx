@@ -1,7 +1,7 @@
-package cn.qqhxj.common.rxtx.processor;
+package cn.qqhxj.rxtx.processor;
 
 /**
- * @author han xinjian
+ * @author han1396735592
  **/
 @FunctionalInterface
 public interface SerialDataProcessor<T> {

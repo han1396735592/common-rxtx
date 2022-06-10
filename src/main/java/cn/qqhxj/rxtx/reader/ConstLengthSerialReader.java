@@ -1,17 +1,12 @@
-package cn.qqhxj.common.rxtx.reader;
+package cn.qqhxj.rxtx.reader;
 
-import cn.qqhxj.common.rxtx.SerialContext;
 
 import java.io.IOException;
 
 /**
- * @author han xinjian
+ * @author han1396735592
  **/
-public class ConstLengthSerialReader   implements SerialReader {
-    private SerialContext serialContext;
-    public void binder(SerialContext serialContext){
-        this.serialContext =serialContext;
-    }
+public class ConstLengthSerialReader extends BaseSerialReader {
     private int length;
 
     private int index = 0;
@@ -24,7 +19,7 @@ public class ConstLengthSerialReader   implements SerialReader {
     public byte[] readBytes() {
         for (; index < length; index++) {
             try {
-                int read = serialContext.getSerialPort().getInputStream().read();
+                int read =this.getInputStream().read();
                 if (read == -1) {
                     break;
                 } else {
