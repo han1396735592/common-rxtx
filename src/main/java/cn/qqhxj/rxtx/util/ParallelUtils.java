@@ -1,4 +1,4 @@
-package cn.qqhxj.rxtx;
+package cn.qqhxj.rxtx.util;
 
 import cn.qqhxj.rxtx.exception.CommPortConnectException;
 import gnu.io.*;

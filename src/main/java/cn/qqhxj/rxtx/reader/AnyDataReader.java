@@ -6,7 +6,7 @@ import java.io.InputStream;
 /**
  * @author han1396735592
  **/
-public class AnyDataReader extends BaseSerialReader {
+public class AnyDataReader extends BaseCommPortReader {
 
     @Override
     public byte[] readBytes() {

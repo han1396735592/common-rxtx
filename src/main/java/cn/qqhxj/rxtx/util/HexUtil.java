@@ -1,4 +1,4 @@
-package cn.qqhxj.rxtx;
+package cn.qqhxj.rxtx.util;
 
 /**
  * @author han1396735592

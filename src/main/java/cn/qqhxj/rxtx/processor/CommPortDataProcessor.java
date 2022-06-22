@@ -1,10 +1,12 @@
 package cn.qqhxj.rxtx.processor;
 
+import gnu.io.CommPort;
+
 /**
  * @author han1396735592
  **/
 @FunctionalInterface
-public interface SerialDataProcessor<T> {
+public interface CommPortDataProcessor<T,P extends CommPort> {
     /**
      * 处理接收到的信息
      *

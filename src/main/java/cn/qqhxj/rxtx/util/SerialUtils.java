@@ -1,4 +1,4 @@
-package cn.qqhxj.rxtx;
+package cn.qqhxj.rxtx.util;
 
 import cn.qqhxj.rxtx.exception.CommPortConnectException;
 import gnu.io.*;
@@ -64,7 +64,7 @@ public class SerialUtils {
         try {
             CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
             if (portIdentifier.isCurrentlyOwned()) {
-                throw new CommPortConnectException(portName + "is using");
+                throw new CommPortConnectException(portName + " is using");
             } else {
                 if (portIdentifier.getPortType() == CommPortIdentifier.PORT_SERIAL) {
                     CommPort commPort = null;

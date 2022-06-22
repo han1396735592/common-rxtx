@@ -6,7 +6,7 @@ import java.io.IOException;
 /**
  * @author han1396735592
  **/
-public class ConstLengthSerialReader extends BaseSerialReader {
+public class ConstLengthCommPortReader extends BaseCommPortReader {
     private int length;
 
     private int index = 0;
@@ -37,12 +37,12 @@ public class ConstLengthSerialReader extends BaseSerialReader {
         return null;
     }
 
-    public ConstLengthSerialReader() {
+    public ConstLengthCommPortReader() {
         length = 24;
         bytes = new byte[length];
     }
 
-    ConstLengthSerialReader(int length) {
+    ConstLengthCommPortReader(int length) {
         this.length = length;
         bytes = new byte[length];
     }

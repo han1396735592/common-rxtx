@@ -1,14 +1,12 @@
 package cn.qqhxj.rxtx.reader;
 
-import cn.qqhxj.rxtx.SerialContext;
-
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 /**
  * @author han1396735592
  **/
-public class LiveControlSerialReader extends BaseSerialReader {
+public class LiveControlCommPortReader extends BaseCommPortReader {
 
 
     private byte[] startChat;
@@ -25,7 +23,7 @@ public class LiveControlSerialReader extends BaseSerialReader {
 
     private boolean notOver = false;
 
-    public LiveControlSerialReader(int flagIndex, int dataLengthIndex, byte... startChat) {
+    public LiveControlCommPortReader(int flagIndex, int dataLengthIndex, byte... startChat) {
         this.startChat = startChat;
         this.flagIndex = flagIndex;
         this.dataLengthIndex = dataLengthIndex;

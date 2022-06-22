@@ -1,8 +1,12 @@
 package cn.qqhxj.rxtx;
 
-import cn.qqhxj.rxtx.event.DefaultSerialDataListener;
-import cn.qqhxj.rxtx.processor.SerialByteDataProcessor;
+import cn.qqhxj.rxtx.context.SerialContext;
+import cn.qqhxj.rxtx.event.DefaultCommPortDataListener;
+import cn.qqhxj.rxtx.processor.CommPortByteDataProcessor;
 import cn.qqhxj.rxtx.reader.AnyDataReader;
+import cn.qqhxj.rxtx.util.HexUtil;
+import cn.qqhxj.rxtx.util.ParallelUtils;
+import cn.qqhxj.rxtx.util.SerialUtils;
 import gnu.io.*;
 
 import java.util.ArrayList;
@@ -50,8 +54,8 @@ public class Test {
         SerialPort serialPort = SerialUtils.connect(portName, 9600);
         SerialContext serialContext = new SerialContext(serialPort);
         serialContext.setSerialReader(new AnyDataReader());
-        serialContext.setSerialPortEventListener(new DefaultSerialDataListener(serialContext));
-        serialContext.setSerialByteDataProcessor(new SerialByteDataProcessor() {
+        serialContext.setCommPortEventListener(new DefaultCommPortDataListener(serialContext));
+        serialContext.setSerialByteDataProcessor(new CommPortByteDataProcessor() {
             @Override
             public void process(byte[] bytes) {
                 System.out.println(portName + ":" + new String(bytes));

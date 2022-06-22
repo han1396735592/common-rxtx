@@ -8,7 +8,7 @@ import java.util.Arrays;
 /**
  * @author han1396735592
  **/
-public class VariableLengthSerialReader extends BaseSerialReader {
+public class VariableLengthCommPortReader extends BaseCommPortReader {
 
     private ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
 
@@ -17,10 +17,10 @@ public class VariableLengthSerialReader extends BaseSerialReader {
 
     private char endChar = '}';
 
-    public VariableLengthSerialReader() {
+    public VariableLengthCommPortReader() {
     }
 
-    public VariableLengthSerialReader(char startChar, char endChar) {
+    public VariableLengthCommPortReader(char startChar, char endChar) {
         this.startChar = startChar;
         this.endChar = endChar;
     }

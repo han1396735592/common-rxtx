@@ -19,7 +19,7 @@
 <dependency>
     <groupId>cn.qqhxj.rxtx</groupId>
     <artifactId>rxtx-common</artifactId>
-    <version>2.0.0-RELEASE</version>
+    <version>2.0.1-RELEASE</version>
 </dependency>
 ```
 
