@@ -3,7 +3,7 @@ package cn.qqhxj.rxtx;
 import cn.qqhxj.rxtx.event.DefaultSerialDataListener;
 import cn.qqhxj.rxtx.processor.SerialByteDataProcessor;
 import cn.qqhxj.rxtx.reader.AnyDataReader;
-import gnu.io.SerialPort;
+import gnu.io.*;
 
 import java.util.ArrayList;
 
@@ -14,19 +14,35 @@ import java.util.ArrayList;
 
 public class Test {
     public static void main(String[] args) throws Exception {
+        System.out.println(ParallelUtils.getNameList());
+        ArrayList<CommPortIdentifier> commPortIdentifierList = SerialUtils.getCommPortIdentifierList();
+        for (CommPortIdentifier commPortIdentifier :commPortIdentifierList){
+            System.out.println(commPortIdentifier);
+            commPortIdentifier.addPortOwnershipListener(new CommPortOwnershipListener() {
+                @Override
+                public void ownershipChange(int type) {
+                    System.out.println(type);
+                }
+            });
+        }
+
         ArrayList<String> commNames = SerialUtils.getCommNames();
         System.out.println(commNames);
         // 连接串口
-        commNames.forEach((name) -> {
+        for (String name : commNames) {
             try {
                 test(name);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        });
+        }
 
         while (true) {
-
+            Thread.sleep(1000);
+            for (CommPortIdentifier commPortIdentifier :commPortIdentifierList) {
+                System.out.println(commPortIdentifier);
+            }
+            System.out.println( SerialUtils.getCommNames());
         }
     }
 
