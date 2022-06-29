@@ -36,8 +36,6 @@ public class DefaultSerialDataListener extends BaseSerialDataListener {
                     processor.process(bytes);
                 }
             }
-        } else {
-            System.err.println("data parse err or not find parser");
         }
     }
 }
