@@ -64,7 +64,7 @@ public class SerialUtils {
         try {
             CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
             if (portIdentifier.isCurrentlyOwned()) {
-                throw new CommPortConnectException(portName + "is using");
+                throw new CommPortConnectException(portName + " is using");
             } else {
                 if (portIdentifier.getPortType() == CommPortIdentifier.PORT_SERIAL) {
                     CommPort commPort = null;
@@ -82,14 +82,14 @@ public class SerialUtils {
                             throw new CommPortConnectException(portName + " not as expected");
                         }
                     } catch (PortInUseException e) {
-                        throw new CommPortConnectException(portName + "is using");
+                        throw new CommPortConnectException(portName + " is using");
                     }
                 } else {
                     throw new CommPortConnectException(portName + " portType  is not port_serial");
                 }
             }
         } catch (NoSuchPortException e) {
-            throw new CommPortConnectException("No Such Port" + portName);
+            throw new CommPortConnectException("No Such Port " + portName);
         }
 
     }

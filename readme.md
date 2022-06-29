@@ -19,7 +19,7 @@
 <dependency>
     <groupId>cn.qqhxj.rxtx</groupId>
     <artifactId>rxtx-common</artifactId>
-    <version>2.0.0-RELEASE</version>
+    <version>2.0.2-RELEASE</version>
 </dependency>
 ```
 
@@ -67,7 +67,7 @@ serialContext.setSerialByteDataProcessor(new SerialByteDataProcessor() {
 需要实现 ` interface SerialDataParser<T>`
 
 ```
- serialContext.getSerialDataParserSet().add(new SerialDataParser<Object>() {
+ serialContext.addSerialDataParser(new SerialDataParser<Object>() {
     @Override
     public Object parse(byte[] bytes) {
         return null;
@@ -78,7 +78,7 @@ serialContext.setSerialByteDataProcessor(new SerialByteDataProcessor() {
 8. 设置串口对象处理器(可选,需要有对应的串口数据解析器)
 
 ```
-serialContext.getSerialDataProcessorSet().add(new SerialDataProcessor<T>() {
+serialContext.addSerialDataProcessor(new SerialDataProcessor<T>() {
     @Override
     public void process(T t) {
         System.out.println(t);
