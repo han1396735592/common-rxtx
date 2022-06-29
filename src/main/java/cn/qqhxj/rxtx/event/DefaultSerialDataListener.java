@@ -6,8 +6,6 @@ import cn.qqhxj.rxtx.parse.SerialDataParser;
 import cn.qqhxj.rxtx.processor.SerialByteDataProcessor;
 import cn.qqhxj.rxtx.processor.SerialDataProcessor;
 import gnu.io.SerialPortEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -15,7 +13,6 @@ import java.util.Map;
  * @author han1396735592
  **/
 public class DefaultSerialDataListener extends BaseSerialDataListener {
-    private static final Logger log = LoggerFactory.getLogger(SerialContext.class);
 
     public DefaultSerialDataListener(SerialContext serialContext) {
         super(serialContext);
