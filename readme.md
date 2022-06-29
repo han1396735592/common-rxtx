@@ -42,7 +42,7 @@ serialContext.setSerialReader(new AnyDataReader());//读取任意数据
 4. 设置串口数据解析器
 
 ```
-serialContext.getSerialDataParserSet().add(new StringSerialDataParser());
+serialContext.addSerialDataParser(new StringSerialDataParser());
 ```
 
 5. 设置串口事件监听器
