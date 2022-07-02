@@ -35,7 +35,7 @@ public class SerialUtils {
     /**
      * 获取所有通信端口标识
      *
-     * @return ArrayList<CommPortIdentifier>
+     * @return 通信端口标识列表
      */
     public static ArrayList<CommPortIdentifier> getCommPortIdentifierList() {
         Enumeration<CommPortIdentifier> portIdentifiers = CommPortIdentifier.getPortIdentifiers();
@@ -101,7 +101,7 @@ public class SerialUtils {
      * @param portName 串口名称
      * @param baudRate 波特率
      * @return SerialPort
-     * @throws Exception SerialPort connect err
+     * @throws CommPortConnectException SerialPort connect err
      */
     public static SerialPort connect(String portName, int baudRate) throws CommPortConnectException {
         return connect(portName, baudRate, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);

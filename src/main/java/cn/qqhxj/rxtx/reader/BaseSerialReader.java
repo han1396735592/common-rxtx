@@ -7,7 +7,6 @@ import java.io.InputStream;
 
 /**
  * @author han1396735592
- * @date 2022/6/9 11:14
  */
 
 public abstract class BaseSerialReader implements SerialReader {

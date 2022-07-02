@@ -159,10 +159,6 @@ public class SerialContext {
         return false;
     }
 
-    public boolean sendData(SerialSendDataEntity obj) {
-        return sendData(obj.getBytes());
-    }
-
     public SerialPort getSerialPort() {
         return serialPort;
     }

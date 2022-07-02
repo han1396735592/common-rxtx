@@ -18,8 +18,8 @@ public interface SerialReader {
 
     /**
      * getInputStream
-     *
      * @return InputStream
+     * @throws IOException error
      */
     InputStream getInputStream() throws IOException;
 }
