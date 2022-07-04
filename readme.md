@@ -13,13 +13,11 @@
 - spring boot 项目请使用 [spring-boot-starter-rxtx](https://github.com/han1396735592/spring-boot-starter-rxtx)
 
 1. 引入依赖
-    - 代码未发布到中心仓库 自行克隆打包使用
-
 ```xml
 <dependency>
-    <groupId>cn.qqhxj.rxtx</groupId>
-    <artifactId>rxtx-common</artifactId>
-    <version>2.0.2-RELEASE</version>
+   <groupId>cn.qqhxj.rxtx</groupId>
+   <artifactId>rxtx-common</artifactId>
+   <version>2.1.0-RELEASE</version>
 </dependency>
 ```
 
