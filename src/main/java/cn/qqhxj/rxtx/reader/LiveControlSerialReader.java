@@ -1,7 +1,5 @@
 package cn.qqhxj.rxtx.reader;
 
-import cn.qqhxj.rxtx.SerialContext;
-
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 

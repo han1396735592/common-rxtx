@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.qqhxj.rxtx</groupId>
     <artifactId>rxtx-common</artifactId>
-    <version>2.1.0-RELEASE</version>
+    <version>3.1.0-RELEASE</version>
 
     <name>common-rxtx</name>
     <description>串口操作</description>
@@ -43,9 +43,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.bidib.jbidib.org.qbang.rxtx</groupId>
-            <artifactId>rxtxcomm</artifactId>
-            <version>2.2</version>
+            <groupId>com.neuronrobotics</groupId>
+            <artifactId>nrjavaserial</artifactId>
+            <version>5.2.1</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

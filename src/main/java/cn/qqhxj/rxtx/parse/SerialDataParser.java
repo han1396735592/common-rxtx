@@ -1,5 +1,7 @@
 package cn.qqhxj.rxtx.parse;
 
+import cn.qqhxj.rxtx.context.AbstractSerialContext;
+
 /**
  * 串口数据解析器
  *
@@ -13,5 +15,5 @@ public interface SerialDataParser<T> {
      * @param bytes data
      * @return object
      */
-    T parse(byte[] bytes);
+    T parse(byte[] bytes, AbstractSerialContext serialContext);
 }
