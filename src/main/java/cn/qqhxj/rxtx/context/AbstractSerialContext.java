@@ -262,7 +262,7 @@ public abstract class AbstractSerialContext {
     }
 
     public byte[] sendAndRead(byte[] data, int outTime) {
-        if (serialPort.isConnected()){
+        if (serialPort.isConnected()) {
             serialPort.notifyOnDataAvailable(false);
         }
         if (sendData(data)) {
@@ -273,21 +273,19 @@ public abstract class AbstractSerialContext {
 
     public byte[] readData(int outTime) {
         serialPort.notifyOnDataAvailable(false);
-        while (outTime >= 0) {
+        long startTime = System.currentTimeMillis();
+        do {
             byte[] bytes = serialReader.readBytes();
             if (bytes.length > 0) {
                 serialPort.notifyOnDataAvailable(true);
                 return bytes;
             }
-            outTime--;
-            if (outTime > 0) {
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException interruptedException) {
+                interruptedException.printStackTrace();
             }
-        }
+        } while (System.currentTimeMillis() - startTime <= outTime);
         serialPort.notifyOnDataAvailable(true);
         return new byte[0];
     }
