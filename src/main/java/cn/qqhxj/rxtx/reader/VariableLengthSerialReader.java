@@ -53,6 +53,6 @@ public class VariableLengthSerialReader extends BaseSerialReader {
                 e.printStackTrace();
             }
         }
-        return null;
+        return new byte[0];
     }
 }
