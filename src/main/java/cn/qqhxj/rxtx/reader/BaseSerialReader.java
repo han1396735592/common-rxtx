@@ -13,10 +13,12 @@ public abstract class BaseSerialReader implements SerialReader {
 
     private AbstractSerialContext abstractSerialContext;
 
+    @Override
     public void setAbstractSerialContext(AbstractSerialContext abstractSerialContext) {
         this.abstractSerialContext = abstractSerialContext;
     }
 
+    @Override
     public AbstractSerialContext getAbstractSerialContext() {
         return abstractSerialContext;
     }

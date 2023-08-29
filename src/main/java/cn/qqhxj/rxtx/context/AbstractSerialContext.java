@@ -5,6 +5,7 @@ import cn.qqhxj.rxtx.parse.SerialDataParser;
 import cn.qqhxj.rxtx.processor.SerialByteDataProcessor;
 import cn.qqhxj.rxtx.processor.SerialDataProcessor;
 import cn.qqhxj.rxtx.reader.BaseSerialReader;
+import cn.qqhxj.rxtx.reader.SerialReader;
 import gnu.io.NRSerialPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,14 +39,14 @@ public abstract class AbstractSerialContext {
     /**
      * 串口数据阅读器
      */
-    protected BaseSerialReader serialReader;
+    protected SerialReader serialReader;
 
     /**
      * 获取串口数据阅读器
      *
      * @return 串口数据阅读器
      */
-    public BaseSerialReader getSerialReader() {
+    public SerialReader getSerialReader() {
         return serialReader;
     }
 
@@ -144,7 +145,7 @@ public abstract class AbstractSerialContext {
         }
     }
 
-    public void setSerialReader(BaseSerialReader serialReader) {
+    public void setSerialReader(SerialReader serialReader) {
         this.serialReader = serialReader;
         serialReader.setAbstractSerialContext(this);
         log.info("[{}({})] serialReader {}", serialPortConfig.getAlias(), serialPortConfig.getPort(), serialReader);

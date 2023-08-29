@@ -1,5 +1,7 @@
 package cn.qqhxj.rxtx.reader;
 
+import cn.qqhxj.rxtx.context.AbstractSerialContext;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -18,8 +20,22 @@ public interface SerialReader {
 
     /**
      * getInputStream
+     *
      * @return InputStream
      * @throws IOException error
      */
     InputStream getInputStream() throws IOException;
+
+    /**
+     * setAbstractSerialContext
+     * @param abstractSerialContext abstractSerialContext
+     */
+    void setAbstractSerialContext(AbstractSerialContext abstractSerialContext);
+
+    /**
+     * getAbstractSerialContext
+     * @return AbstractSerialContext
+     */
+    AbstractSerialContext getAbstractSerialContext();
+
 }
