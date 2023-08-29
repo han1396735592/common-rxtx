@@ -20,8 +20,6 @@
 
 - 获取可用串口Set
 `  Set<String> availableSerialPorts = NRSerialPort.getAvailableSerialPorts();`
-portName such as COM1 或者使用 `SerialUtils.getCommNames();`
-
 ```
     SerialPortConfig serialPortConfig = new SerialPortConfig();
     serialPortConfig.setPort("COM1");
