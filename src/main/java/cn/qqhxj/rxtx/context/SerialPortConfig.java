@@ -4,7 +4,6 @@ import gnu.io.SerialPort;
 
 /**
  * @author han1396735592
- * @date 2022/9/16 09:15
  */
 public class SerialPortConfig {
     private boolean autoConnect = true;

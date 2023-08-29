@@ -13,6 +13,7 @@ public interface SerialDataParser<T> {
      * Convert To Data Based On Data
      *
      * @param bytes data
+     * @param serialContext serialContext
      * @return object
      */
     T parse(byte[] bytes, AbstractSerialContext serialContext);
