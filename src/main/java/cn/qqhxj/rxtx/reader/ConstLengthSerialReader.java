@@ -7,34 +7,29 @@ import java.io.IOException;
  * @author han1396735592
  **/
 public class ConstLengthSerialReader extends BaseSerialReader {
-    private int length;
+    private final int length;
 
-    private int index = 0;
+    private final byte[] bytes;
 
-    private byte[] bytes;
-
-    private boolean read = true;
+    private int readLength = 0;
 
     @Override
     public byte[] readBytes() {
-        for (; index < length; index++) {
-            try {
-                int read =this.getInputStream().read();
-                if (read == -1) {
-                    break;
+        try {
+            while (readLength != length) {
+                int read = this.getInputStream().read();
+                if (read != -1) {
+                    bytes[readLength] = (byte) read;
+                    readLength++;
                 } else {
-                    bytes[index] = (byte) read;
+                    return new byte[0];
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        if (index == length) {
-            index = 0;
-            return bytes;
-        }
-        return null;
+        readLength = 0;
+        return bytes;
     }
 
     public ConstLengthSerialReader() {
@@ -42,7 +37,7 @@ public class ConstLengthSerialReader extends BaseSerialReader {
         bytes = new byte[length];
     }
 
-    ConstLengthSerialReader(int length) {
+    public ConstLengthSerialReader(int length) {
         this.length = length;
         bytes = new byte[length];
     }
