@@ -24,9 +24,8 @@ import java.util.TooManyListenersException;
  * @author han1396735592
  **/
 public final class SerialContextImpl implements SerialContext {
-
+    public static int READ_TIME_OUT = 100;
     private static final Logger log = LoggerFactory.getLogger(SerialContextImpl.class);
-    public static int DEFAULT_OUT_TIME = 100;
     public static final EventExecutor EVENT_EXECUTOR = new EventExecutor(2);
 
     /**
@@ -235,22 +234,22 @@ public final class SerialContextImpl implements SerialContext {
 
     @Override
     public byte[] sendAndRead(byte[] data) {
-        return sendAndRead(data, DEFAULT_OUT_TIME);
+        return sendAndRead(data, READ_TIME_OUT);
     }
 
     @Override
-    public byte[] sendAndRead(byte[] data, int outTime) {
+    public byte[] sendAndRead(byte[] data, int timeOut) {
         if (serialPort.isConnected()) {
             serialPort.notifyOnDataAvailable(false);
         }
         if (sendData(data)) {
-            return readData(outTime);
+            return readData(timeOut);
         }
         return new byte[0];
     }
 
     @Override
-    public byte[] readData(int outTime) {
+    public byte[] readData(int timeOut) {
         serialPort.notifyOnDataAvailable(false);
         long startTime = System.currentTimeMillis();
         do {
@@ -264,7 +263,7 @@ public final class SerialContextImpl implements SerialContext {
             } catch (InterruptedException interruptedException) {
                 interruptedException.printStackTrace();
             }
-        } while (System.currentTimeMillis() - startTime <= outTime);
+        } while (System.currentTimeMillis() - startTime <= timeOut);
         serialPort.notifyOnDataAvailable(true);
         return new byte[0];
     }
@@ -278,8 +277,8 @@ public final class SerialContextImpl implements SerialContext {
     }
 
     @Override
-    public <T> T sendAndRead(byte[] data, int outTime, Class<T> clazz) {
-        byte[] bytes = sendAndRead(data, outTime);
+    public <T> T sendAndRead(byte[] data, int timeOut, Class<T> clazz) {
+        byte[] bytes = sendAndRead(data, timeOut);
         Map<Class, SerialDataParser> dataParserMap = this.getSerialDataParserMap();
         SerialDataParser<T> serialDataParser = dataParserMap.get(clazz);
         return serialDataParser.parse(bytes, this);
@@ -287,7 +286,7 @@ public final class SerialContextImpl implements SerialContext {
 
     @Override
     public byte[] readData() {
-        return readData(DEFAULT_OUT_TIME);
+        return readData(READ_TIME_OUT);
     }
 
 }

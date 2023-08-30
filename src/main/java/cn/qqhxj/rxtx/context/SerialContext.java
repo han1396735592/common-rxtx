@@ -18,6 +18,7 @@ import java.util.Map;
 
 public interface SerialContext {
 
+
     /**
      * 获取串口数据阅读器
      *
@@ -147,6 +148,7 @@ public interface SerialContext {
         }
         return false;
     }
+
     /**
      * addSerialDataParser
      *
@@ -173,18 +175,18 @@ public interface SerialContext {
      * 读取并发送数据
      *
      * @param data    数据
-     * @param outTime 超时时间
+     * @param timeOut 超时时间
      * @return 读取的数据
      */
-    byte[] sendAndRead(byte[] data, int outTime);
+    byte[] sendAndRead(byte[] data, int timeOut);
 
     /**
      * 读取数据
      *
-     * @param outTime 超时时间
+     * @param timeOut 超时时间
      * @return 读取的数据
      */
-    byte[] readData(int outTime);
+    byte[] readData(int timeOut);
 
     /**
      * 读取并发送数据
@@ -200,12 +202,12 @@ public interface SerialContext {
      * 读取并发送数据
      *
      * @param data    数据
-     * @param outTime 超时时间
+     * @param timeOut 超时时间
      * @param clazz   类型
      * @param <T>     类型
      * @return 返回的数据
      */
-    <T> T sendAndRead(byte[] data, int outTime, Class<T> clazz);
+    <T> T sendAndRead(byte[] data, int timeOut, Class<T> clazz);
 
     /**
      * 读取数据
