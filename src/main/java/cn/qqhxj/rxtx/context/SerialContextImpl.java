@@ -97,6 +97,7 @@ public final class SerialContextImpl implements SerialContext {
     @Override
     public void setSerialContextEventListener(SerialContextEventListener serialContextEventListener) {
         this.serialContextEventListener = serialContextEventListener;
+        log.info("[{}({})] setSerialContextEventListener {}", serialPortConfig.getAlias(), serialPortConfig.getPort(), serialContextEventListener);
     }
 
     @Override
