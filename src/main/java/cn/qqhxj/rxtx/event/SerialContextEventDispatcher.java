@@ -2,7 +2,6 @@ package cn.qqhxj.rxtx.event;
 
 import cn.qqhxj.rxtx.context.SerialContext;
 import cn.qqhxj.rxtx.context.SerialContextImpl;
-import cn.qqhxj.rxtx.context.SerialPortConfig;
 import cn.qqhxj.rxtx.parse.SerialDataParser;
 import cn.qqhxj.rxtx.processor.SerialByteDataProcessor;
 import cn.qqhxj.rxtx.processor.SerialDataProcessor;
@@ -19,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class SerialContextEventDispatcher implements SerialPortEventListener {
     private static final Logger log = LoggerFactory.getLogger(SerialContextEventDispatcher.class);
-    protected final SerialContext serialContext;
+    private final SerialContext serialContext;
 
     public SerialContextEventDispatcher(SerialContext serialContext) {
         this.serialContext = serialContext;
@@ -72,7 +71,7 @@ public class SerialContextEventDispatcher implements SerialPortEventListener {
     }
 
     /**
-     * 连接失败是触发
+     * 连接失败时触发
      */
     public void connectError() {
         log.error("[{}({})] connectError", serialContext.getSerialPortConfig().getAlias(), serialContext.getSerialPortConfig().getPort());
@@ -84,7 +83,7 @@ public class SerialContextEventDispatcher implements SerialPortEventListener {
     }
 
     /**
-     * 连接失败是触发
+     * 连接失败时触发
      */
     public void hardwareError() {
         log.error("[{}({})] hardwareError", serialContext.getSerialPortConfig().getAlias(), serialContext.getSerialPortConfig().getPort());
