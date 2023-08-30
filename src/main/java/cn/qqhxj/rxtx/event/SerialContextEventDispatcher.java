@@ -15,8 +15,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author sinok
- * @date 2023/8/30 12:00
+ * @author han1396735592
  */
 public class SerialContextEventDispatcher implements SerialPortEventListener {
     private static final Logger log = LoggerFactory.getLogger(SerialContextEventDispatcher.class);

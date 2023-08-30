@@ -80,35 +80,35 @@ public interface SerialContext {
     /**
      * setSerialReader
      *
-     * @param serialReader
+     * @param serialReader serialReader
      */
     void setSerialReader(SerialReader serialReader);
 
     /**
      * getSerialByteDataProcessor
      *
-     * @return
+     * @return SerialByteDataProcessor
      */
     SerialByteDataProcessor getSerialByteDataProcessor();
 
     /**
      * 设置串口byte数据处理器
      *
-     * @param serialByteDataProcessor
+     * @param serialByteDataProcessor serialByteDataProcessor
      */
     void setSerialByteDataProcessor(SerialByteDataProcessor serialByteDataProcessor);
 
     /**
      * 获取串口数据解析器
      *
-     * @return
+     * @return 串口数据解析器
      */
     Map<Class, SerialDataParser> getSerialDataParserMap();
 
     /**
      * 获取串口数据处理器
      *
-     * @return
+     * @return 串口数据处理器
      */
     Map<Class, SerialDataProcessor> getSerialDataProcessorMap();
 
@@ -124,7 +124,7 @@ public interface SerialContext {
     /**
      * addSerialDataProcessor
      *
-     * @param value
+     * @param value SerialDataProcessor
      */
     void addSerialDataProcessor(SerialDataProcessor<?> value);
 
@@ -157,7 +157,7 @@ public interface SerialContext {
     /**
      * 获取串口配置
      *
-     * @return
+     * @return 串口配置
      */
     SerialPortConfig getSerialPortConfig();
 
