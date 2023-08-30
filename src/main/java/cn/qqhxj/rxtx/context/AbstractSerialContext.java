@@ -25,7 +25,7 @@ import java.util.TooManyListenersException;
 
 public abstract class AbstractSerialContext {
     private static final Logger log = LoggerFactory.getLogger(AbstractSerialContext.class);
-    public final int DEFAULT_OUT_TIME = 100;
+    public static int DEFAULT_OUT_TIME = 100;
     /**
      * 串口对象
      */

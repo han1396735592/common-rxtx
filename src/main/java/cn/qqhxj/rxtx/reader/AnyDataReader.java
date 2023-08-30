@@ -10,15 +10,7 @@ public class AnyDataReader extends BaseSerialReader {
 
     @Override
     public byte[] readBytes() {
-        try {
-            InputStream inputStream = this.getInputStream();
-            byte[] bytes = new byte[inputStream.available()];
-            inputStream.read(bytes);
-            return bytes;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new byte[0];
+        return readAvailableBytes();
     }
 
 }

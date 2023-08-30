@@ -27,4 +27,15 @@ public abstract class BaseSerialReader implements SerialReader {
     public InputStream getInputStream() throws IOException {
         return abstractSerialContext.getInputStream();
     }
+    public byte[] readAvailableBytes() {
+        try {
+            InputStream inputStream = this.getInputStream();
+            byte[] bytes = new byte[inputStream.available()];
+            inputStream.read(bytes);
+            return bytes;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new byte[0];
+    }
 }
