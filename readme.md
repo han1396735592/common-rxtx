@@ -22,20 +22,39 @@
 `  Set<String> availableSerialPorts = NRSerialPort.getAvailableSerialPorts();`
 ```
     SerialPortConfig serialPortConfig = new SerialPortConfig();
-    serialPortConfig.setPort("COM1");
-    serialPortConfig.setBaud(9600);
-    serialPortConfig.setAutoConnect(false);
-    SerialContext serialContext = new SerialContext(serialPortConfig);
-    serialContext.setSerialContextListener(new AbstractSerialContextListener(serialContext) {
-        @Override
-        public void connected() {
-            System.out.println("connected");// connected
-        }
-    });
-    serialContext.setSerialReader(new AnyDataReader());
-    serialContext.connect();
-    byte[] bytes = serialContext.sendAndRead(HexUtil.HexStringToBytes("01 03 00 00 00 02 C4 0B"));
-    System.out.println(HexUtil.bytesToHexString(bytes)); // 01 03 04 01 6e 01 18 9b 88
+        serialPortConfig.setPort("COM1");
+        serialPortConfig.setBaud(9600);
+        serialPortConfig.setAutoConnect(true);
+        SerialContextImpl serialContext = new SerialContextImpl(serialPortConfig);
+        serialContext.setSerialReader(new AnyDataReader());
+        serialContext.setSerialContextEventListener(new SerialContextEventListener() {
+            @Override
+            public void connected(SerialContext serialContext) {
+                System.out.println("connected");
+            }
+
+            @Override
+            public void disconnected(SerialContext serialContext) {
+                System.out.println("disconnected");
+            }
+
+            @Override
+            public void connectError(SerialContext serialContext) {
+                System.out.println("connectError");
+            }
+
+            @Override
+            public void hardwareError(SerialContext serialContext) {
+                System.out.println("hardwareError");
+            }
+        });
+        serialContext.connect();
+        serialContext.setSerialByteDataProcessor(new SerialByteDataProcessor() {
+            @Override
+            public void process(byte[] bytes, SerialContext serialContext) {
+                System.out.println(serialContext.getSerialPortConfig().getPort()+"---"+new String(bytes));
+            }
+        });
 ```
 
 3. 设置串口读写器
@@ -54,7 +73,9 @@ serialContext.addSerialDataParser(new StringSerialDataParser());
 5. 设置串口事件监听器
 
 ```
-serialContext.setSerialPortEventListener(new SerialContextListener(serialContext));
+serialContext.setSerialContextEventListener(new SerialContextEventListener() {
+
+});
 ```
 
 6. 设置串口byte数据处理器(可选)

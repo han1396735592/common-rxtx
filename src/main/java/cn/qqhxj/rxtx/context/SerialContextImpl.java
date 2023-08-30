@@ -81,7 +81,6 @@ public final class SerialContextImpl implements SerialContext {
     public SerialContextImpl(SerialPortConfig serialPortConfig, SerialReader serialReader) {
         this(serialPortConfig);
         this.serialReader = serialReader;
-
     }
 
     @Override
