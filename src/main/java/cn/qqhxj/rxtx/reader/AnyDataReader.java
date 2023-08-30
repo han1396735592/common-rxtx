@@ -1,7 +1,5 @@
 package cn.qqhxj.rxtx.reader;
 
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * @author han1396735592
