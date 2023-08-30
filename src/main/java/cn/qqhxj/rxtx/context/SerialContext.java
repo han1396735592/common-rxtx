@@ -27,6 +27,12 @@ public interface SerialContext {
     SerialReader getSerialReader();
 
     /**
+     * 获取连接次数
+     * @return connectCount
+     */
+    int connectCount();
+
+    /**
      * 获取串口
      *
      * @return 获取串口

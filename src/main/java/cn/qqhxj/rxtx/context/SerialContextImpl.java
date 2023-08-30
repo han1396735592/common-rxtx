@@ -28,6 +28,8 @@ public final class SerialContextImpl implements SerialContext {
     private static final Logger log = LoggerFactory.getLogger(SerialContextImpl.class);
     public static final EventExecutor EVENT_EXECUTOR = new EventExecutor(2);
 
+    private int connectCount = 0;
+
     /**
      * 串口对象
      */
@@ -83,6 +85,11 @@ public final class SerialContextImpl implements SerialContext {
     }
 
     @Override
+    public int connectCount() {
+        return connectCount;
+    }
+
+    @Override
     public SerialReader getSerialReader() {
         return serialReader;
     }
@@ -126,6 +133,7 @@ public final class SerialContextImpl implements SerialContext {
             serialPort.setBaud(serialPortConfig.getBaud());
             connect = serialPort.connect();
             if (connect) {
+                connectCount++;
                 autoSerialPortAddEventListener();
                 serialContextEventDispatcher.connected();
             } else {
