@@ -245,6 +245,9 @@ public final class SerialContextImpl implements SerialContext {
         if (sendData(data)) {
             return readData(timeOut);
         }
+        if (serialPort.isConnected()) {
+            serialPort.notifyOnDataAvailable(true);
+        }
         return new byte[0];
     }
 
@@ -270,10 +273,7 @@ public final class SerialContextImpl implements SerialContext {
 
     @Override
     public <T> T sendAndRead(byte[] data, Class<T> clazz) {
-        byte[] bytes = sendAndRead(data);
-        Map<Class, SerialDataParser> dataParserMap = this.getSerialDataParserMap();
-        SerialDataParser<T> serialDataParser = dataParserMap.get(clazz);
-        return serialDataParser.parse(bytes, this);
+        return sendAndRead(data, READ_TIME_OUT, clazz);
     }
 
     @Override
