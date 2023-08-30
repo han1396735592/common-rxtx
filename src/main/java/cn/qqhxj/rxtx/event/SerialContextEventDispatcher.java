@@ -1,7 +1,8 @@
 package cn.qqhxj.rxtx.event;
 
-import cn.qqhxj.rxtx.context.AbstractSerialContext;
 import cn.qqhxj.rxtx.context.SerialContext;
+import cn.qqhxj.rxtx.context.SerialContextImpl;
+import cn.qqhxj.rxtx.context.SerialPortConfig;
 import cn.qqhxj.rxtx.parse.SerialDataParser;
 import cn.qqhxj.rxtx.processor.SerialByteDataProcessor;
 import cn.qqhxj.rxtx.processor.SerialDataProcessor;
@@ -13,17 +14,15 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-
-
 /**
- * @author han1396735592
+ * @author sinok
+ * @date 2023/8/30 12:00
  */
-public abstract class AbstractSerialContextListener implements SerialPortEventListener {
-    protected final AbstractSerialContext serialContext;
+public class SerialContextEventDispatcher implements SerialPortEventListener {
+    private static final Logger log = LoggerFactory.getLogger(SerialContextEventDispatcher.class);
+    protected final SerialContext serialContext;
 
-    private static final Logger log = LoggerFactory.getLogger(AbstractSerialContextListener.class);
-
-    public AbstractSerialContextListener(AbstractSerialContext serialContext) {
+    public SerialContextEventDispatcher(SerialContext serialContext) {
         this.serialContext = serialContext;
     }
 
@@ -56,6 +55,10 @@ public abstract class AbstractSerialContextListener implements SerialPortEventLi
      */
     public void connected() {
         log.info("[{}({})] connected", serialContext.getSerialPortConfig().getAlias(), serialContext.getSerialPortConfig().getPort());
+        SerialContextEventListener serialContextEventListener = serialContext.getSerialContextEventListener();
+        if (serialContextEventListener != null) {
+            serialContextEventListener.connected(serialContext);
+        }
     }
 
     /**
@@ -63,6 +66,10 @@ public abstract class AbstractSerialContextListener implements SerialPortEventLi
      */
     public void disconnected() {
         log.info("[{}({})] disconnected", serialContext.getSerialPortConfig().getAlias(), serialContext.getSerialPortConfig().getPort());
+        SerialContextEventListener serialContextEventListener = serialContext.getSerialContextEventListener();
+        if (serialContextEventListener != null) {
+            serialContextEventListener.disconnected(serialContext);
+        }
     }
 
     /**
@@ -70,6 +77,12 @@ public abstract class AbstractSerialContextListener implements SerialPortEventLi
      */
     public void connectError() {
         log.error("[{}({})] connectError", serialContext.getSerialPortConfig().getAlias(), serialContext.getSerialPortConfig().getPort());
+        SerialContextEventListener serialContextEventListener = serialContext.getSerialContextEventListener();
+        if (serialContextEventListener != null) {
+            serialContextEventListener.connectError(serialContext);
+        }
+        SerialPortConfig serialPortConfig = serialContext.getSerialPortConfig();
+        this.tryAutoConnect(serialPortConfig.getAutoReconnectInterval());
     }
 
     /**
@@ -77,20 +90,24 @@ public abstract class AbstractSerialContextListener implements SerialPortEventLi
      */
     public void hardwareError() {
         log.error("[{}({})] hardwareError", serialContext.getSerialPortConfig().getAlias(), serialContext.getSerialPortConfig().getPort());
+        SerialContextEventListener serialContextEventListener = serialContext.getSerialContextEventListener();
+        if (serialContextEventListener != null) {
+            serialContextEventListener.hardwareError(serialContext);
+        }
+        SerialPortConfig serialPortConfig = serialContext.getSerialPortConfig();
+        this.tryAutoConnect(serialPortConfig.getAutoReconnectInterval());
     }
 
     public void tryAutoConnect(long timeout) {
         if (serialContext.getSerialPortConfig().isAutoConnect()) {
             if (timeout >= 0) {
-                SerialContext.EVENT_EXECUTOR.schedule(() -> {
+                SerialContextImpl.EVENT_EXECUTOR.schedule(() -> {
                     if (!serialContext.isConnected()) {
                         log.info("[{}({})] try auto connect", serialContext.getSerialPortConfig().getAlias(), serialContext.getSerialPortConfig().getPort());
                         serialContext.connect();
                     }
                 }, timeout, TimeUnit.MILLISECONDS);
             }
-
         }
     }
-
 }

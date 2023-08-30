@@ -1,6 +1,6 @@
 package cn.qqhxj.rxtx.processor;
 
-import cn.qqhxj.rxtx.context.AbstractSerialContext;
+import cn.qqhxj.rxtx.context.SerialContext;
 
 /**
  * @author han1396735592
@@ -14,5 +14,5 @@ public interface SerialByteDataProcessor {
      * @param bytes         data
      * @param serialContext serialContext
      */
-    void process(byte[] bytes, AbstractSerialContext serialContext);
+    void process(byte[] bytes, SerialContext serialContext);
 }

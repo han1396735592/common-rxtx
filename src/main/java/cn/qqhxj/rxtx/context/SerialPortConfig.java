@@ -6,10 +6,27 @@ import gnu.io.SerialPort;
  * @author han1396735592
  */
 public class SerialPortConfig {
+    /**
+     * 自动重连
+     */
     private boolean autoConnect = true;
+
+    /**
+     * 重连间隔
+     */
+    private int autoReconnectInterval = 10000;
+    /**
+     * 串口
+     */
     private String port;
+    /**
+     * 别名
+     */
     private String alias;
 
+    /**
+     * 波特率
+     */
     private int baud = 115200;
 
     private int dataBits = SerialPort.DATABITS_8;
@@ -79,10 +96,16 @@ public class SerialPortConfig {
         this.parity = parity;
     }
 
+    public int getAutoReconnectInterval() {
+        return autoReconnectInterval;
+    }
+
+    public void setAutoReconnectInterval(int autoReconnectInterval) {
+        this.autoReconnectInterval = autoReconnectInterval;
+    }
+
     @Override
     public String toString() {
-        return "{port:" + port + ",alias:" + alias + ",baud:" + baud + ",dataBits:" + dataBits + ",parity:" + parity + ",stopBits:" + stopBits
-
-                + "}";
+        return "{port:" + port + ",alias:" + alias + ",baud:" + baud + ",dataBits:" + dataBits + ",parity:" + parity + ",stopBits:" + stopBits + "}";
     }
 }

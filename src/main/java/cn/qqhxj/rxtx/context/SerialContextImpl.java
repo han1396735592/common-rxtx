@@ -1,17 +1,17 @@
 package cn.qqhxj.rxtx.context;
 
-import cn.qqhxj.rxtx.event.AbstractSerialContextListener;
+
+import cn.qqhxj.rxtx.EventExecutor;
+import cn.qqhxj.rxtx.event.SerialContextEventDispatcher;
+import cn.qqhxj.rxtx.event.SerialContextEventListener;
 import cn.qqhxj.rxtx.parse.SerialDataParser;
 import cn.qqhxj.rxtx.processor.SerialByteDataProcessor;
 import cn.qqhxj.rxtx.processor.SerialDataProcessor;
-import cn.qqhxj.rxtx.reader.BaseSerialReader;
 import cn.qqhxj.rxtx.reader.SerialReader;
 import gnu.io.NRSerialPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collections;
@@ -19,51 +19,93 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TooManyListenersException;
 
+
 /**
  * @author han1396735592
- */
+ **/
+public final class SerialContextImpl implements SerialContext {
 
-public abstract class AbstractSerialContext {
-    private static final Logger log = LoggerFactory.getLogger(AbstractSerialContext.class);
+    private static final Logger log = LoggerFactory.getLogger(SerialContextImpl.class);
     public static int DEFAULT_OUT_TIME = 100;
+    public static final EventExecutor EVENT_EXECUTOR = new EventExecutor(2);
+
     /**
      * 串口对象
      */
-    protected final NRSerialPort serialPort;
-    protected SerialPortConfig serialPortConfig;
+    private final NRSerialPort serialPort;
+
     /**
-     * 串口监听器
+     * 串口配置
      */
-    protected AbstractSerialContextListener serialContextListener;
+    private final SerialPortConfig serialPortConfig;
 
     /**
      * 串口数据阅读器
      */
-    protected SerialReader serialReader;
+    private SerialReader serialReader;
 
     /**
-     * 获取串口数据阅读器
-     *
-     * @return 串口数据阅读器
+     * 串口byte数据处理器
      */
+    private SerialByteDataProcessor serialByteDataProcessor;
+
+    /**
+     * 串口上下文事件监听器
+     */
+    private SerialContextEventListener serialContextEventListener;
+
+    /**
+     * 串口数据解析器
+     */
+    private final Map<Class, SerialDataParser> serialDataParserMap = Collections.synchronizedMap(new HashMap<>());
+
+    /**
+     * 串口数据处理器
+     */
+    private final Map<Class, SerialDataProcessor> serialDataProcessorMap = Collections.synchronizedMap(new HashMap<>());
+    /**
+     * 串口上下文事件分发器
+     */
+    private final SerialContextEventDispatcher serialContextEventDispatcher;
+
+    public SerialContextImpl(SerialPortConfig serialPortConfig) {
+        this.serialPort = new NRSerialPort(serialPortConfig.getPort(),
+                serialPortConfig.getBaud(),
+                serialPortConfig.getParity(),
+                serialPortConfig.getDataBits(),
+                serialPortConfig.getStopBits());
+        this.serialPortConfig = serialPortConfig;
+        this.serialContextEventDispatcher = new SerialContextEventDispatcher(this);
+    }
+
+    public SerialContextImpl(SerialPortConfig serialPortConfig, SerialReader serialReader) {
+        this(serialPortConfig);
+        this.serialReader = serialReader;
+
+    }
+
+    @Override
     public SerialReader getSerialReader() {
         return serialReader;
     }
 
-    /**
-     * 获取串口
-     *
-     * @return 获取串口
-     */
+
+    @Override
     public NRSerialPort getSerialPort() {
         return serialPort;
     }
 
-    /**
-     * 连接串口
-     *
-     * @return 是否成功
-     */
+    @Override
+    public void setSerialContextEventListener(SerialContextEventListener serialContextEventListener) {
+        this.serialContextEventListener = serialContextEventListener;
+    }
+
+    @Override
+    public SerialContextEventListener getSerialContextEventListener() {
+        return serialContextEventListener;
+    }
+
+    @Override
     public boolean connect() {
         boolean connect = serialPort.isConnected();
         //之前未连接
@@ -86,44 +128,20 @@ public abstract class AbstractSerialContext {
             connect = serialPort.connect();
             if (connect) {
                 autoSerialPortAddEventListener();
-                if (serialContextListener != null) {
-                    serialContextListener.connected();
-                }
+                serialContextEventDispatcher.connected();
             } else {
-                if (serialContextListener != null) {
-                    serialContextListener.connectError();
-                }
+                serialContextEventDispatcher.connectError();
             }
         }
         return connect;
     }
 
-    /**
-     * 是否连接成功
-     *
-     * @return isConnected
-     */
-    public boolean isConnected() {
-        return serialPort.isConnected();
-    }
-
-    /**
-     * 断开连接
-     */
-    public void disconnect() {
-        serialPort.removeEventListener();
-        serialPort.disconnect();
-        if (serialContextListener != null) {
-            serialContextListener.disconnected();
-        }
-    }
-
 
     private void autoSerialPortAddEventListener() {
-        if (this.serialContextListener != null && this.serialPort.getSerialPortInstance() != null) {
+        if (this.serialPort.getSerialPortInstance() != null) {
             serialPort.removeEventListener();
             try {
-                this.serialPort.addEventListener(this.serialContextListener);
+                this.serialPort.addEventListener(this.serialContextEventDispatcher);
                 this.serialPort.getSerialPortInstance().notifyOnDataAvailable(true);
                 this.serialPort.getSerialPortInstance().notifyOnBreakInterrupt(true);
             } catch (TooManyListenersException e) {
@@ -132,72 +150,42 @@ public abstract class AbstractSerialContext {
         }
     }
 
-    public AbstractSerialContextListener getSerialContextListener() {
-        return serialContextListener;
-    }
-
-    public void setSerialContextListener(AbstractSerialContextListener serialContextListener) {
-        log.info("[{}({})] setSerialContextListener {}", serialPortConfig.getAlias(), serialPortConfig.getPort(), serialContextListener);
-        this.serialContextListener = serialContextListener;
-        autoSerialPortAddEventListener();
-        if (serialPortConfig.isAutoConnect()) {
-            this.connect();
-        }
-    }
-
+    @Override
     public void setSerialReader(SerialReader serialReader) {
         this.serialReader = serialReader;
-        serialReader.setAbstractSerialContext(this);
+        serialReader.setSerialContext(this);
         log.info("[{}({})] serialReader {}", serialPortConfig.getAlias(), serialPortConfig.getPort(), serialReader);
     }
 
+    @Override
     public SerialByteDataProcessor getSerialByteDataProcessor() {
         return serialByteDataProcessor;
     }
 
+    @Override
     public void setSerialByteDataProcessor(SerialByteDataProcessor serialByteDataProcessor) {
         this.serialByteDataProcessor = serialByteDataProcessor;
         log.info("[{}({})] setSerialByteDataProcessor {}", serialPortConfig.getAlias(), serialPortConfig.getPort(), serialByteDataProcessor);
     }
 
+
+    @Override
     public Map<Class, SerialDataParser> getSerialDataParserMap() {
         return serialDataParserMap;
     }
 
+    @Override
     public Map<Class, SerialDataProcessor> getSerialDataProcessorMap() {
         return serialDataProcessorMap;
     }
 
-    protected SerialByteDataProcessor serialByteDataProcessor;
 
-    protected final Map<Class, SerialDataParser> serialDataParserMap = Collections.synchronizedMap(new HashMap<>());
-
-    protected final Map<Class, SerialDataProcessor> serialDataProcessorMap = Collections.synchronizedMap(new HashMap<>());
-
-    public AbstractSerialContext(SerialPortConfig serialPortConfig) {
-        this.serialPort = new NRSerialPort(serialPortConfig.getPort(),
-                serialPortConfig.getBaud(),
-                serialPortConfig.getParity(),
-                serialPortConfig.getDataBits(),
-                serialPortConfig.getStopBits());
-        this.serialPortConfig = serialPortConfig;
+    @Override
+    public SerialContextEventDispatcher getSerialContextEventDispatcher() {
+        return serialContextEventDispatcher;
     }
 
-
-    public AbstractSerialContext(SerialPortConfig serialPortConfig, BaseSerialReader serialReader) {
-        this(serialPortConfig);
-        this.serialReader = serialReader;
-    }
-
-    /**
-     * 获取输入流
-     *
-     * @return InputStream
-     */
-    public InputStream getInputStream() {
-        return serialPort.getInputStream();
-    }
-
+    @Override
     public void addSerialDataProcessor(SerialDataProcessor<?> value) {
         if (value != null) {
             Method[] methods = value.getClass().getMethods();
@@ -218,24 +206,13 @@ public abstract class AbstractSerialContext {
         }
     }
 
-    public boolean sendData(byte[] data) {
-        if (isConnected()) {
-            try {
-                serialPort.getOutputStream().write(data);
-                serialPort.getOutputStream().flush();
-                return true;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
-    }
 
+    @Override
     public void addSerialDataParser(SerialDataParser<?> value) {
         if (value != null) {
             Method method = null;
             try {
-                method = value.getClass().getMethod("parse", byte[].class, AbstractSerialContext.class);
+                method = value.getClass().getMethod("parse", byte[].class, SerialContext.class);
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             }
@@ -251,17 +228,17 @@ public abstract class AbstractSerialContext {
         }
     }
 
+    @Override
     public SerialPortConfig getSerialPortConfig() {
         return serialPortConfig;
     }
 
-
-    public abstract byte[] readData();
-
+    @Override
     public byte[] sendAndRead(byte[] data) {
         return sendAndRead(data, DEFAULT_OUT_TIME);
     }
 
+    @Override
     public byte[] sendAndRead(byte[] data, int outTime) {
         if (serialPort.isConnected()) {
             serialPort.notifyOnDataAvailable(false);
@@ -272,6 +249,7 @@ public abstract class AbstractSerialContext {
         return new byte[0];
     }
 
+    @Override
     public byte[] readData(int outTime) {
         serialPort.notifyOnDataAvailable(false);
         long startTime = System.currentTimeMillis();
@@ -291,7 +269,7 @@ public abstract class AbstractSerialContext {
         return new byte[0];
     }
 
-
+    @Override
     public <T> T sendAndRead(byte[] data, Class<T> clazz) {
         byte[] bytes = sendAndRead(data);
         Map<Class, SerialDataParser> dataParserMap = this.getSerialDataParserMap();
@@ -299,11 +277,17 @@ public abstract class AbstractSerialContext {
         return serialDataParser.parse(bytes, this);
     }
 
-
+    @Override
     public <T> T sendAndRead(byte[] data, int outTime, Class<T> clazz) {
         byte[] bytes = sendAndRead(data, outTime);
         Map<Class, SerialDataParser> dataParserMap = this.getSerialDataParserMap();
         SerialDataParser<T> serialDataParser = dataParserMap.get(clazz);
         return serialDataParser.parse(bytes, this);
     }
+
+    @Override
+    public byte[] readData() {
+        return readData(DEFAULT_OUT_TIME);
+    }
+
 }

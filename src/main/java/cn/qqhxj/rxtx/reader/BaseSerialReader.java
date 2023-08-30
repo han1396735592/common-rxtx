@@ -1,6 +1,6 @@
 package cn.qqhxj.rxtx.reader;
 
-import cn.qqhxj.rxtx.context.AbstractSerialContext;
+import cn.qqhxj.rxtx.context.SerialContext;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,21 +11,21 @@ import java.io.InputStream;
 
 public abstract class BaseSerialReader implements SerialReader {
 
-    private AbstractSerialContext abstractSerialContext;
+    private SerialContext serialContext;
 
     @Override
-    public void setAbstractSerialContext(AbstractSerialContext abstractSerialContext) {
-        this.abstractSerialContext = abstractSerialContext;
+    public void setSerialContext(SerialContext serialContext) {
+        this.serialContext = serialContext;
     }
 
     @Override
-    public AbstractSerialContext getAbstractSerialContext() {
-        return abstractSerialContext;
+    public SerialContext setSerialContext() {
+        return serialContext;
     }
 
     @Override
     public InputStream getInputStream() throws IOException {
-        return abstractSerialContext.getInputStream();
+        return serialContext.getInputStream();
     }
     public byte[] readAvailableBytes() {
         try {
