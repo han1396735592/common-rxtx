@@ -81,8 +81,7 @@ public class SerialContextEventDispatcher implements SerialPortEventListener {
         if (serialContextEventListener != null) {
             serialContextEventListener.connectError(serialContext);
         }
-        SerialPortConfig serialPortConfig = serialContext.getSerialPortConfig();
-        this.tryAutoConnect(serialPortConfig.getAutoReconnectInterval());
+        this.tryAutoConnect();
     }
 
     /**
@@ -94,19 +93,18 @@ public class SerialContextEventDispatcher implements SerialPortEventListener {
         if (serialContextEventListener != null) {
             serialContextEventListener.hardwareError(serialContext);
         }
-        SerialPortConfig serialPortConfig = serialContext.getSerialPortConfig();
-        this.tryAutoConnect(serialPortConfig.getAutoReconnectInterval());
+        this.tryAutoConnect();
     }
 
-    public void tryAutoConnect(long timeout) {
-        if (serialContext.getSerialPortConfig().isAutoConnect()) {
-            if (timeout >= 0) {
+    public void tryAutoConnect() {
+        if (serialContext.getSerialPortConfig().isErrorAutoConnect()) {
+            if (serialContext.getSerialPortConfig().getReconnectInterval() >= 0) {
                 SerialContextImpl.EVENT_EXECUTOR.schedule(() -> {
                     if (!serialContext.isConnected()) {
                         log.info("[{}({})] try auto connect", serialContext.getSerialPortConfig().getAlias(), serialContext.getSerialPortConfig().getPort());
                         serialContext.connect();
                     }
-                }, timeout, TimeUnit.MILLISECONDS);
+                }, serialContext.getSerialPortConfig().getReconnectInterval(), TimeUnit.MILLISECONDS);
             }
         }
     }

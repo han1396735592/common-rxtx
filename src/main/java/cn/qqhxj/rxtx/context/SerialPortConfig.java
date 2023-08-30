@@ -7,14 +7,13 @@ import gnu.io.SerialPort;
  */
 public class SerialPortConfig {
     /**
-     * 自动重连
+     * 错误自动重连
      */
-    private boolean autoConnect = true;
-
+    private boolean errorAutoConnect = true;
     /**
      * 重连间隔
      */
-    private int autoReconnectInterval = 10000;
+    private int reconnectInterval = 10000;
     /**
      * 串口
      */
@@ -35,13 +34,7 @@ public class SerialPortConfig {
 
     private int parity = SerialPort.PARITY_NONE;
 
-    public boolean isAutoConnect() {
-        return autoConnect;
-    }
 
-    public void setAutoConnect(boolean autoConnect) {
-        this.autoConnect = autoConnect;
-    }
 
 
     public String getAlias() {
@@ -96,12 +89,20 @@ public class SerialPortConfig {
         this.parity = parity;
     }
 
-    public int getAutoReconnectInterval() {
-        return autoReconnectInterval;
+    public boolean isErrorAutoConnect() {
+        return errorAutoConnect;
     }
 
-    public void setAutoReconnectInterval(int autoReconnectInterval) {
-        this.autoReconnectInterval = autoReconnectInterval;
+    public void setErrorAutoConnect(boolean errorAutoConnect) {
+        this.errorAutoConnect = errorAutoConnect;
+    }
+
+    public int getReconnectInterval() {
+        return reconnectInterval;
+    }
+
+    public void setReconnectInterval(int reconnectInterval) {
+        this.reconnectInterval = reconnectInterval;
     }
 
     @Override

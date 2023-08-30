@@ -24,7 +24,6 @@
     SerialPortConfig serialPortConfig = new SerialPortConfig();
         serialPortConfig.setPort("COM1");
         serialPortConfig.setBaud(9600);
-        serialPortConfig.setAutoConnect(true);
         SerialContextImpl serialContext = new SerialContextImpl(serialPortConfig);
         serialContext.setSerialReader(new AnyDataReader());
         serialContext.setSerialContextEventListener(new SerialContextEventListener() {
@@ -52,7 +51,7 @@
         serialContext.setSerialByteDataProcessor(new SerialByteDataProcessor() {
             @Override
             public void process(byte[] bytes, SerialContext serialContext) {
-                System.out.println(serialContext.getSerialPortConfig().getPort()+"---"+new String(bytes));
+                System.out.println(serialContext.getSerialPortConfig().getPort() + "---" + new String(bytes));
             }
         });
 ```
