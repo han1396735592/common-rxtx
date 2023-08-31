@@ -7,7 +7,7 @@
 
 - spring boot 项目请使用 [spring-boot-starter-rxtx](https://github.com/han1396735592/spring-boot-starter-rxtx)
 
-1. 引入依赖(未发布到中央仓库)
+1. 引入依赖
 ```xml
 <dependency>
    <groupId>cn.qqhxj.rxtx</groupId>
